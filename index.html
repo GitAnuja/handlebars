@@ -1,12 +1,13 @@
-Hi
+ANUJA
 <div id="main"></div>
 <script id="temp" type="text/x-handlebars-template ">
-  <div>ANUJA</div>
+  <div>Hi : {{name}}!!</div>
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="index.js"></script>
 <script>
   var source = $("#temp").html();
   var template = Handlebars.compile(source);
-  $("#main").html(template);
+  var data = {name : "Anuja"};
+  $("#main").html(template(data));
 </script>

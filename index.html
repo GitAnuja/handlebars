@@ -3,12 +3,21 @@ ANUJA
 <script id="temp" type="text/x-handlebars-template ">
   <div>Hi : {{name}}!!{{title}}!!{{name}}</div>
   <div>{{{body}}}<div>
+	  {{#list people}}{{firstName}} {{lastName}}{{/list}}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="index.js"></script>
 <script>
+	Handlebars.registerHelper("list", function(items, options){
+		var ret = "<ul>";
+		for(var i=0; i<items.length; i++){
+			ret+="<li>"+options.fn(items[i])+"</li>";
+		}
+		ret+="</ul>";
+		return ret;
+	});
   var source = $("#temp").html();
   var template = Handlebars.compile(source);
-  var data = {name : "Anuja", title : "Manoharan", body : "<b>BODY<b>"};
+  var data = {name : "Anuja", title : "Manoharan", body : "<b>BODY<b>", people : [{firstName : "Anuja", lastName : "Manoharan"}, {firstName : "Prabu", lastName : "Rajendran"}, {firstName : "Boopathy", lastName : "P"}]};
   $("#main").html(template(data));
 </script>

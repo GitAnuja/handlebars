@@ -35,8 +35,11 @@ var Handlebars = {
 			  index = source.indexOf("{{");
 			  continue;
 		  }
-		  var property = source.substring(index+2, close);
-		  var val = data[property];
+		  var property = source.substring(index+2, close).split(".");
+		  var val = data[property[0]];
+		  for(var i=1; i<property.length; i++){
+			  val = val[property[1]];
+		  }
 		  if(triple){
 			  index--;
 			  close++;

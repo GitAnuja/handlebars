@@ -28,25 +28,42 @@ var Handlebars = {
 			  var close1 = source.indexOf(end, close+2);
 			  var temp = Handlebars.$.helper[helper](arg, {fn : function(v){
 				  var str = source.substring(close+2, close1);
-				  var str1 = Handlebars.replaceString(str, v);
+				  var str1 = Handlebars.replaceString(str, v, data);
 				  return str1;
 			  }});
 			  source = source.replace(source.substring(index, close1+end.length), temp);
 			  index = source.indexOf("{{");
 			  continue;
 		  }
-		  var property = source.substring(index+2, close).split(".");
-		  var val = data[property[0]];
-		  for(var i=1; i<property.length; i++){
-			  val = val[property[1]];
+		  else if(source.substring(index+2, index+5) == "!--"){
+			  source = source.replace(source.substring(index, close+2), "");
+			  index = source.indexOf("{{");
+			  continue;
 		  }
-		  if(triple){
-			  index--;
-			  close++;
-			  val = Handlebars.escapeVal(val);
+		  else if(source[index+2] == ">"){
+			  var partial = source.substring(index, close).split(" ")[1];
+			  source = source.replace(source.substring(index, close+2), Handlebars.$.partial[partial]);
+			  index = source.indexOf("{{");
+			  continue;
 		  }
-		  source = source.replace(new RegExp(source.substring(index, close+2), 'g'), val);
-		  index = source.indexOf("{{");
+		  var property = source.substring(index+2, close), prop = property.split(" "), val;
+		  if(Handlebars.$.helper[prop[0]]){
+			  val = Handlebars.$.helper[prop[0]](data[prop[1]]);
+		  }
+		  else{
+			  property = property.split(".");
+			  val = data[property[0]];
+			  for(var i=1; i<property.length; i++){
+				  val = val[property[1]];
+			  }
+			  if(triple){
+				  index--;
+				  close++;
+				  val = Handlebars.escapeVal(val).toString();
+			  }
+		  }
+		  source = source.replace(source.substring(index, close+2), val);
+		  index = source.indexOf("{{");		  	
       }
 	  return source;
     });
@@ -64,16 +81,24 @@ var Handlebars = {
 	  this.$.helper[name] = func;
   },
   $ : {
-	  helper : {}
+	  helper : {},
+	  partial : {}
   },
-  replaceString : function(str, val){
+  replaceString : function(str, val, data){
 	  var index = str.indexOf("{{");
 	  while(index > -1){
 		  var close = str.indexOf("}}");
-		  var property = str.substring(index+2, close);
-		  str = str.replace(new RegExp(str.substring(index, close+2), 'g'), val[property]);	  	
+		  var property = str.substring(index+2, close), val1 = val;
+		  if(property.indexOf("..") > -1){
+			  property = property.split("../")[1];
+			  val1 = data;
+		  }
+		  str = str.replace(new RegExp(str.substring(index, close+2), 'g'), val1[property]);	  	
 		  index = str.indexOf("{{");
 	  }
 	  return str;
+  },
+  registerPartial : function(name, partial){
+	  this.$.partial[name] = partial;
   }
 }

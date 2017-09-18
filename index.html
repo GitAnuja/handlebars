@@ -2,9 +2,13 @@ ANUJA
 <div id="main"></div>
 <script id="temp" type="text/x-handlebars-template ">
   <div>Hi : {{name}}!!{{title}}!!{{name}}</div>
-  <div>{{{body}}}<div>
-	  <div>{{#list people}}{{firstName}} {{lastName}}{{/list}}</div>
+  <div>{{{body}}}</div>
+	  <div>{{#list people}}{{firstName}} {{lastName}} - {{../title}}{{/list}}</div>
 	  <div>{{author.name}}</div>
+	  {{!-- comment --}}
+	  <!-- comment -->
+	  {{fullName author}}
+	  <div>{{> userMessage}}</div>
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="index.js"></script>
@@ -17,8 +21,12 @@ ANUJA
 		ret+="</ul>";
 		return ret;
 	});
+	Handlebars.registerHelper("fullName", function(person){
+		return person.firstName+" "+person.lastName;	
+	});
+	Handlebars.registerPartial("userMessage", "<{{tagName}}>By {{author.firstName}} {{author.lastName}}</{{tagName}}><div class='body'>{{body}}</div>");
   var source = $("#temp").html();
   var template = Handlebars.compile(source);
-  var data = {name : "Anuja", title : "Manoharan", body : "<b>BODY<b>", people : [{firstName : "Anuja", lastName : "Manoharan"}, {firstName : "Prabu", lastName : "Rajendran"}, {firstName : "Boopathy", lastName : "P"}], author : {name : "Soups"}};
+  var data = {name : "Anuja", title : "Manoharan", body : "<b>BODY</b>", people : [{firstName : "Anuja", lastName : "Manoharan"}, {firstName : "Prabu", lastName : "Rajendran"}, {firstName : "Boopathy", lastName : "P"}], author : {name : "Soups", firstName : "Maha", lastName : "Lakshmi"}, tagName : "a"};
   $("#main").html(template(data));
 </script>

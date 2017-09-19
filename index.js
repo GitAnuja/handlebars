@@ -54,7 +54,10 @@ var Handlebars = {
 			  property = property.split(".");
 			  val = data[property[0]];
 			  for(var i=1; i<property.length; i++){
-				  val = val[property[1]];
+				  if(property[i][0] == "["){
+					  property[i] = property[i].substring(1, property[i].indexOf("]"));
+				  }
+				  val = val[property[i]];
 			  }
 			  if(triple){
 				  index--;

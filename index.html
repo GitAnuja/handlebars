@@ -9,6 +9,9 @@ ANUJA
 	  <!-- comment -->
 	  {{fullName author}}
 	  <div>{{> userMessage}}</div>
+	  <div>{{people.[0].firstName}}</div>
+	  <div>{{people.[0].[firstName]}}</div>
+	  <div>{{people.0.firstName}}</div>
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="index.js"></script>

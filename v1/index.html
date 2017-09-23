@@ -2,9 +2,12 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{concat first last}}</div>
+		<div>{{{escape}}}</div>
 		<div>{{first}} {{last}}</div>
 		<div>Nothing</div>
 		<div>{{dob.date}} {{dob.month}} {{dob/year}}</div>
+		<div>{{items.0}}</div>
 	</script>	
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

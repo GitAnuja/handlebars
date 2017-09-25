@@ -7,7 +7,7 @@ var Handlebars = {
 				ret += source.substring(close+p, index);
 				close = source.indexOf("}}", index)
 				p = 2;
-				if(source[index+2] == "{"){
+				if(source[index+2] == "{" || source[index+2] == "#"){
 					p++;
 				}
 				var property = source.substring(index+p, close);
@@ -17,6 +17,14 @@ var Handlebars = {
 					var args = [];
 					for(var i=1; i<property.length; i++){
 						args[i-1] = data[property[i]];
+					}
+					if(p == 3){
+						var closeH = source.indexOf("{{/"+helper+"}}", close);
+						var opt = source.substring(close+2, closeH);
+						args.push({fn : function(data){
+							return Handlebars.compile(opt)(data);
+						}});
+						close = closeH+("{{/"+helper).length;
 					}
 					ret+=Handlebars.helpers[helper].apply(null, args);
 				}

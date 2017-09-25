@@ -2,6 +2,7 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{#list people}}{{firstName}} {{lastName}}{{/list}}</div>
 		<div>{{concat first last}}</div>
 		<div>{{{escape}}}</div>
 		<div>{{first}} {{last}}</div>

@@ -25,6 +25,7 @@ var Handlebars = {
 							return Handlebars.compile(opt)(data);
 						}});
 						close = closeH+("{{/"+helper).length;
+						p--;	
 					}
 					ret+=Handlebars.helpers[helper].apply(null, args);
 				}
@@ -61,5 +62,22 @@ var Handlebars = {
 	registerHelper : function(name, f){
 		Handlebars.helpers[name] = f;
 	},
-	helpers : {}
+	helpers : {
+		with : function(data, opt){
+			return opt.fn(data);
+		},
+		each : function(data, opt){
+			var ret = "";
+			for(var i=0; i<data.length; i++){
+				ret+=opt.fn(data[i]);
+			}
+			return ret;
+		},
+		if : function(data, opt){
+			if(data){
+				return opt.fn(this);
+			}
+			return "";
+		}
+	}
 }

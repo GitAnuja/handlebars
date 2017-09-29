@@ -21,13 +21,30 @@ var Handlebars = {
 					if(p == 3){
 						var closeH = source.indexOf("{{/"+helper+"}}", close);
 						var opt = source.substring(close+2, closeH);
+						opt = opt.split("{{else");
 						args.push({fn : function(data){
-							return Handlebars.compile(opt)(data);
+							return Handlebars.compile(opt[0])(data);
+						}, inverse : function(data){
+							if(opt[1]){	
+								if(opt[1].indexOf("if") == 1){
+									args[0] = data[opt[1].substring(opt[1].indexOf(" if ")+4, opt[1].indexOf("}}"))];
+									opt[0] = opt[1].split("}}")[1];
+									opt.splice(1, 1);
+									ret+=Handlebars.helpers[helper].apply(null, args);
+								}
+								else{
+									return Handlebars.compile(opt[1])(data);									
+								}
+							}
+							else{
+								return "";
+							}
 						}});
 						close = closeH+("{{/"+helper).length;
 						p--;	
 					}
-					ret+=Handlebars.helpers[helper].apply(null, args);
+					var ret1 = Handlebars.helpers[helper].apply(null, args);
+					ret+=(ret1?ret1:"");
 				}
 				else{
 					property = property.split("/").join(".");
@@ -77,7 +94,7 @@ var Handlebars = {
 			if(data){
 				return opt.fn(this);
 			}
-			return "";
+			return opt.inverse(this);
 		}
 	}
 }

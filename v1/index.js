@@ -4,7 +4,7 @@ window.onload = function(){
 	var data = {first : "Anuja", last : "Manoharan", dob : {date : 29, month : 10, year : 1992}, items : ["One", "Two"],
 	escape : "<b>BODY</b>", people: [{firstName: "Yehuda", lastName: "Katz"}, {firstName: "Carl", lastName: "Lerche"},
 	{firstName: "Alan", lastName: "Johnson"}], item : {intro : "intro12", break : "break34"},
-	bool : false};
+	bool : false, bool1 : false};
 	Handlebars.registerHelper("concat", function(first, last){
 		return first+"+++"+last;
 	});

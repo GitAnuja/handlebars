@@ -2,7 +2,7 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
-		<div>{{#if bool}}ANUJA{{/if}}</div>
+		<div>{{#if bool}}ANUJA{{else if bool1}}BOOPI{{/if}}</div>
 		<div>{{#each people}}{{firstName}} {{lastName}}{{/each}}</div>
 		<div>{{#with item}}{{intro}} {{break}}{{/with}}</div>
 		<div>{{#list people}}{{firstName}} {{lastName}}{{/list}}</div>

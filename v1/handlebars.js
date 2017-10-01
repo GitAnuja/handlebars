@@ -1,29 +1,50 @@
 var Handlebars = {
 	compile : function(source){
-		return (function(data){
+		return (function(data, i){
 			var ret = "";
 			var index = source.indexOf("{{"), close = -2, p =2;
 			while(index > -1){
 				ret += source.substring(close+p, index);
 				close = source.indexOf("}}", index)
 				p = 2;
-				if(source[index+2] == "{" || source[index+2] == "#"){
+				if(source[index+2] == "{" || source[index+2] == "#" || source[index+2] == "@"){
 					p++;
 				}
 				var property = source.substring(index+p, close);
-				if(Handlebars.helpers[property.split(" ")[0]]){
+				if(property == "index"){
+					ret+=i;
+					p--;
+				}
+				else if(Handlebars.helpers[property.split(" ")[0]]){
 					property = property.split(" ");
 					var helper = property[0];
 					var args = [];
 					for(var i=1; i<property.length; i++){
-						args[i-1] = data[property[i]];
+						if(property[i].indexOf("(") > -1){
+							var subHelper = property[i].split("(")[1];
+							var subHelperArg = [];
+							for(var j=i+1; j<property.length; j++){
+								if(property[j].indexOf(")") > -1){
+									subHelperArg.push(data[property[j].split(")")[0]]);
+									break;
+								}
+								else{
+									subHelperArg.push(data[property[j]]);
+								}
+							}
+							args[i-1] = Handlebars.helpers[subHelper].apply(null, subHelperArg);
+							i = j;
+						}
+						else{
+							args[i-1] = data[property[i]];							
+						}
 					}
 					if(p == 3){
 						var closeH = source.indexOf("{{/"+helper+"}}", close);
 						var opt = source.substring(close+2, closeH);
 						opt = opt.split("{{else");
-						args.push({fn : function(data){
-							return Handlebars.compile(opt[0])(data);
+						args.push({fn : function(data, index){
+							return Handlebars.compile(opt[0])(data, index);
 						}, inverse : function(data){
 							if(opt[1]){	
 								if(opt[1].indexOf("if") == 1){
@@ -40,6 +61,11 @@ var Handlebars = {
 								return "";
 							}
 						}});
+						if(helper == "each" && property[2] == "as"){
+							args.splice(1, 3);
+							args.push(property[3].split("|")[1]);
+							args.push(property[4].split("|")[0])
+						}
 						close = closeH+("{{/"+helper).length;
 						p--;	
 					}
@@ -83,10 +109,16 @@ var Handlebars = {
 		with : function(data, opt){
 			return opt.fn(data);
 		},
-		each : function(data, opt){
+		each : function(data, opt, item, index){
 			var ret = "";
 			for(var i=0; i<data.length; i++){
-				ret+=opt.fn(data[i]);
+				if(item){
+					var val = data[i];
+					data[i] = {};
+					data[i][item] = val;
+					data[i][index] = i+1;
+				}
+				ret+=opt.fn(data[i], i+1);
 			}
 			return ret;
 		},

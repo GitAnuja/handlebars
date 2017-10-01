@@ -2,8 +2,10 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{#if (getValue bool)}}BOOPI{{/if}}</div>
+		<div>{{#each items as |item id|}}{{item}} {{id}}<br>{{/each}}</div>
+		<div>{{#each people}}{{@index}} {{firstName}}<br>{{/each}}</div>
 		<div>{{#if bool}}ANUJA{{else if bool1}}BOOPI{{/if}}</div>
-		<div>{{#each people}}{{firstName}} {{lastName}}{{/each}}</div>
 		<div>{{#with item}}{{intro}} {{break}}{{/with}}</div>
 		<div>{{#list people}}{{firstName}} {{lastName}}{{/list}}</div>
 		<div>{{concat first last}}</div>

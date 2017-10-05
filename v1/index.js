@@ -5,8 +5,8 @@ window.onload = function(){
 	escape : "<b>BODY</b>", people: [{firstName: "Yehuda", lastName: "Katz"}, {firstName: "Carl", lastName: "Lerche"},
 	{firstName: "Alan", lastName: "Johnson"}], item : {intro : "intro12", break : "break34"},
 	bool : true, bool1 : false};
-	Handlebars.registerHelper("concat", function(first, last){
-		return first+"+++"+last;
+	Handlebars.registerHelper("concat", function(a, b){
+		return a+"+++"+b;
 	});
 	Handlebars.registerHelper("list", function(items, opt){
 		var ret = "";

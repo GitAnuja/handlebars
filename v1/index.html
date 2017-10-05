@@ -2,6 +2,9 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		{{concat b=last a=first}}
+		{{!-- do not display --}}
+		<!-- comment -->
 		<div>{{#if (getValue bool)}}BOOPI{{/if}}</div>
 		<div>{{#each items as |item id|}}{{item}} {{id}}<br>{{/each}}</div>
 		<div>{{#each people}}{{@index}} {{firstName}}<br>{{/each}}</div>

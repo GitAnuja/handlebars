@@ -10,6 +10,11 @@ var Handlebars = {
 				if(source[index+2] == "{" || source[index+2] == "#" || source[index+2] == "@"){
 					p++;
 				}
+				else if(source.indexOf("!--") == index+2){
+					close = source.indexOf("--}}", index)+2;
+					index = source.indexOf("{{", close);
+					continue;
+				}
 				var property = source.substring(index+p, close);
 				if(property == "index"){
 					ret+=i;
@@ -34,6 +39,11 @@ var Handlebars = {
 							}
 							args[i-1] = Handlebars.helpers[subHelper].apply(null, subHelperArg);
 							i = j;
+						}
+						else if(property[i].indexOf("=") > -1){
+							var prop = property[i].split("=");
+							var arg = Handlebars.getArgs(Handlebars.helpers[helper]);
+							args[arg.indexOf(prop[0])] = data[prop[1]];
 						}
 						else{
 							args[i-1] = data[property[i]];							
@@ -128,5 +138,13 @@ var Handlebars = {
 			}
 			return opt.inverse(this);
 		}
+	},
+	getArgs : function(fn){
+		var args = fn.toString().match(/function\s.*?\(([^)]*)\)/)[1];
+		return args.split(",").map(function(arg){
+			return arg.replace(/\/\*.*\*\//, '').trim();
+		}).filter(function(arg){
+			return arg;
+		});
 	}
 }

@@ -2,6 +2,8 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{#each items}}<br>{{@index}}{{/each}}</div>
+		{{> partial1}}
 		{{concat b=last a=first}}
 		{{!-- do not display --}}
 		<!-- comment -->
@@ -18,6 +20,9 @@ ANUJA
 		<div>{{dob.date}} {{dob.month}} {{dob/year}}</div>
 		<div>{{items.0}}</div>
 	</script>	
+	<script id="partial1" type="text/x-handlebars-template">
+		<div>ANUJA {{first}}</div>
+	</script>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="index.js"></script>

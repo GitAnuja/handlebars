@@ -7,7 +7,7 @@ var Handlebars = {
 				ret += source.substring(close+p, index);
 				close = source.indexOf("}}", index)
 				p = 2;
-				if(source[index+2] == "{" || source[index+2] == "#" || source[index+2] == "@"){
+				if(source[index+2] == "{" || source[index+2] == "#"){
 					p++;
 				}
 				else if(source.indexOf("!--") == index+2){
@@ -16,9 +16,14 @@ var Handlebars = {
 					continue;
 				}
 				var property = source.substring(index+p, close);
-				if(property == "index"){
+				if(property == "@index"){
 					ret+=i;
-					p--;
+				}
+				else if(property.indexOf(">") == 0){
+					property = property.split(" ");
+					var partial = property[1];
+					var html = Handlebars.partials[partial];
+					ret+=Handlebars.compile(html)(data);
 				}
 				else if(Handlebars.helpers[property.split(" ")[0]]){
 					property = property.split(" ");
@@ -146,5 +151,9 @@ var Handlebars = {
 		}).filter(function(arg){
 			return arg;
 		});
-	}
+	},
+	registerPartial : function(name, html){
+		Handlebars.partials[name] = html;
+	},
+	partials : {}
 }

@@ -20,6 +20,7 @@ window.onload = function(){
 			return true;
 		}
 		return false;
-	})
+	});
+	Handlebars.registerPartial("partial1", $("#partial1").html());
 	$("#main").html(template(data));
 }

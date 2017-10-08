@@ -2,6 +2,7 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{#each dob}}{{@key}}-{{this}}{{/each}}</div>
 		<div>{{#each items}}<br>{{@index}}{{/each}}</div>
 		{{> partial1}}
 		{{concat b=last a=first}}

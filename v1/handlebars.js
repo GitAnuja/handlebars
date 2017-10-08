@@ -126,14 +126,23 @@ var Handlebars = {
 		},
 		each : function(data, opt, item, index){
 			var ret = "";
-			for(var i=0; i<data.length; i++){
-				if(item){
-					var val = data[i];
-					data[i] = {};
-					data[i][item] = val;
-					data[i][index] = i+1;
+			if(Array.isArray(data)){
+				for(var i=0; i<data.length; i++){
+					if(item){
+						var val = data[i];
+						data[i] = {};
+						data[i][item] = val;
+						data[i][index] = i+1;
+					}
+					ret+=opt.fn(data[i], i+1);
+				}				
+			}
+			else{
+				for(var key in data){
+					var val  = data[key];
+					data[key] = {this : val, "@key" : key};
+					ret+=opt.fn(data[key]);
 				}
-				ret+=opt.fn(data[i], i+1);
 			}
 			return ret;
 		},

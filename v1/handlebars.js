@@ -151,6 +151,12 @@ var Handlebars = {
 				return opt.fn(this);
 			}
 			return opt.inverse(this);
+		},
+		unless : function(data, opt){
+			if(!data){
+				return opt.fn(this);
+			}
+			return opt.inverse(this);
 		}
 	},
 	getArgs : function(fn){

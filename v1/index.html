@@ -2,6 +2,9 @@ ANUJA
 <script src="handlebars.js"></script>
 <body>
 	<script id="handlebars" type="text/x-handlebars-template">
+		<div>{{items.0}}</div>
+		<div>{{dob.date}} {{dob.month}} {{dob/year}}</div>
+		<div>{{#if bool}}ANUJA1{{else if bool1}}BOOPI1{{else if bool2}}PRABU1{{/if}}</div>
 		<div>{{#unless bool1}}ANUJA{{/unless}}</div>
 		<div>{{#each dob}}{{@key}}-{{this}}{{/each}}</div>
 		<div>{{#each items}}<br>{{@index}}{{/each}}</div>
@@ -19,8 +22,6 @@ ANUJA
 		<div>{{{escape}}}</div>
 		<div>{{first}} {{last}}</div>
 		<div>Nothing</div>
-		<div>{{dob.date}} {{dob.month}} {{dob/year}}</div>
-		<div>{{items.0}}</div>
 	</script>	
 	<script id="partial1" type="text/x-handlebars-template">
 		<div>ANUJA {{first}}</div>

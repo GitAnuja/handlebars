@@ -66,9 +66,10 @@ var Handlebars = {
 									args[0] = data[opt[1].substring(opt[1].indexOf(" if ")+4, opt[1].indexOf("}}"))];
 									opt[0] = opt[1].split("}}")[1];
 									opt.splice(1, 1);
-									ret+=Handlebars.helpers[helper].apply(null, args);
+									return Handlebars.helpers[helper].apply(data, args);
 								}
 								else{
+									opt[1] = opt[1].substring(opt[1].indexOf("}}")+2);
 									return Handlebars.compile(opt[1])(data);									
 								}
 							}
@@ -84,7 +85,7 @@ var Handlebars = {
 						close = closeH+("{{/"+helper).length;
 						p--;	
 					}
-					var ret1 = Handlebars.helpers[helper].apply(null, args);
+					var ret1 = Handlebars.helpers[helper].apply(data, args);
 					ret+=(ret1?ret1:"");
 				}
 				else{
@@ -104,6 +105,7 @@ var Handlebars = {
 				index = source.indexOf("{{", close);
 			}
 			ret+=source.substring(close+2);
+			console.log(ret)
 			return ret;
 		});
 	},

@@ -88,6 +88,9 @@ var Handlebars = {
 					var ret1 = Handlebars.helpers[helper].apply(data, args);
 					ret+=(ret1?ret1:"");
 				}
+				else if(property == "this"){
+					ret+=data;
+				}
 				else{
 					property = property.split("/").join(".");
 					property = property.split(".");
